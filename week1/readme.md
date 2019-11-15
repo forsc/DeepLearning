@@ -37,3 +37,6 @@ A compressed value of extracted feature on convolution
 
 ## Convolution
 A Mathematical function to extract features from a data matrix/In our case image Matrix
+
+## score
+[0.05554706477607963, 0.9922]
