@@ -29,7 +29,7 @@ A numerical matrix to extract feature from a data matrix / Or in this case image
 
 ## Activation Function
 
-A transformation function used on.
+A transformation function
 
 ## Receptive Field
 
