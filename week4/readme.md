@@ -1,6 +1,6 @@
-###traing a resnet on Cifar10
+### traing a resnet on Cifar10
 
-##epoch log
+## epoch log
 ```
 Using real-time data augmentation.
 Epoch 1/50
@@ -155,5 +155,8 @@ Learning rate:  0.001
 391/391 [==============================] - 44s 113ms/step - loss: 0.4000 - acc: 0.9194 - val_loss: 0.6096 - val_acc: 0.8726
 ```
 
-###highest accuracy 
+### highest accuracy 
 88.13
+
+### Annotation Done
+via_project_8Dec2019_15h27m
