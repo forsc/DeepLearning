@@ -202,3 +202,8 @@ Test set: Average loss: 0.0182, Accuracy: 9940/10000 (99.40%)
 ### Factor deciding the final model
 1. less parameters
 2. Bit more consistent 
+
+### Team
+1. Rahul
+2. Nilanjan
+3. Nitin
