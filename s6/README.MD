@@ -75,12 +75,12 @@ Estimated Total Size (MB): 0.76
 2. More regularization techniques can help in gaining the appropriate features to predict
 
 ## Validation Accuracy
-![Validation Accuracy](../s6/ValidationACC.png)
+![Validation_Accuracy](../s6/ValidationACC.png)
 
 ## Validation loss
-![Validation loss](../s6/ValidationLoss.png)
+![Validation_loss](../s6/ValidationLoss.png)
 
 ## 25 Misclassified images
-![25 Missclassified images](../s6/Missclassified.png)
+![25 Missclassified_images](../s6/Missclassified.png)
 
 
