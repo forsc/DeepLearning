@@ -5,6 +5,6 @@ import torch.nn.functional as F
 
 def optim_define(model):
     criterion = nn.CrossEntropyLoss()
-    #optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-    optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+    optimizer = optim.SGD(model.parameters(), lr=0.005, momentum=0.9)
+    #optimizer = optim.Adam(model.parameters(), lr=0.005)
     return(optimizer)
