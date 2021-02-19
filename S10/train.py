@@ -1,0 +1,101 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from utility_fun import truth_checker
+
+class training_class:
+    def __init__(self, model, trainloader, testloader, device, epoch, optimizer,criterion,l1=0,l2=0,scheduler = None):
+        self.model = model
+        self.trainloader = trainloader
+        self.testloader = testloader
+        self.device = device
+        self.epoch = epoch
+        self.optimizer = optimizer
+        self.criterion = criterion
+        self.l1 = l1
+        self.l2 = l2
+        self.loss = 0
+        self.scheduler = scheduler
+
+    def fit(self):
+        self.model.train()
+        for x_epoch in range(self.epoch):
+            #running_loss = 0.0
+            for i, data in enumerate(self.trainloader, 0):
+                inputs, labels = data
+                inputs, labels = inputs.to(self.device), labels.to(self.device)
+                self.optimizer.zero_grad()
+                outputs = self.model(inputs)
+                # Loss
+
+                self.loss = self.criterion(outputs, labels)
+                if self.l1 > 0:
+                    l1_loss = 0
+                    for param in self.model.parameters():
+                        l1_loss += torch.norm(param,1)
+                    self.loss += self.l1*l1_loss
+                if self.l2 > 0:
+                    l2_loss = 0
+                    for param in self.model.parameters():
+                        l2_loss +=torch.norm(param,2)
+                    self.loss += self.l2*l2_loss
+
+
+                self.loss.backward()
+                self.optimizer.step()
+
+            if self.scheduler:
+                self.scheduler.step()
+                
+            ###Where to Predict LEL
+            train_check = truth_checker(self.model,self.trainloader,self.device) ##FIXTHISSHITLATER
+            test_check =  truth_checker(self.model, self.testloader, self.device)
+            #train_check = truth_checker(self.model,self.trainloader)
+            print('epoch [%d] train accuracy %.3f : test accuracy %.3f' %
+                  (x_epoch,train_check, test_check))
+
+    def predict_method(self,testloader,miss_class,correct_class):
+        self.testloader = testloader
+        self.miss_class = miss_class
+        self.correct_class = correct_class
+        self.model.eval()
+        test_loss = 0
+        correct = 0
+        missclassified_images = []
+        correct_images = []
+        with torch.no_grad():
+            for inputs,target in self.testloader:
+                inputs,target = inputs.to(self.device),target(self.device)
+                outputs = self.model(inputs)
+                test_loss +=self.criterion(outputs, target).item()
+                pred = outputs.argmax(dim=1, keepdim=True) 
+                is_correct = pred.eq(target.view_as(pred))
+                if self.miss_class>0:
+                    misclassified_inds = (is_correct==0).nonzero()[:,0]
+                    for image in misclassified_inds:
+                        if len(missclassified_images) == self.miss_class:
+                            break
+                        missclassified_images.append({"target": target[image].cpu().numpy(),
+                                                      "pred": pred[image][0].cpu().numpy(),
+                                                      "img": self.testloader[image]
+                                                      })
+                if self.correct_class>0:
+                    corret_inds = (is_correct==1).nonzero()[:,0]
+                    for image in corret_inds:
+                        if len(correct_images)==self.correct_class:
+                            break
+                        correct_images.append({"target": target[image].cpu().numpy(),
+                                                "pred" : pred[image][0].cpu().numpy(),
+                                                "img"  : self.testloader[image]
+                                              })
+        correct += is_correct.sum().item()
+        test_loss.append(test_loss)
+        test_acc = 100. * correct / len(self.testloader.dataset)
+        #test_acc.append(test_acc)
+        return test_acc,correct_images,missclassified_images
+
+    def give_model(self):
+        return self.model
+
+
+
