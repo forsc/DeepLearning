@@ -63,19 +63,25 @@ class training_class:
                   (x_epoch,train_check, test_check))
         return train_acc,test_acc
 
-    def predict_method(self,testloader,miss_class,correct_class):
+    def predict_method(self,testloader,miss_class,correct_class,remode=None):
         self.testloader = testloader
         self.miss_class = miss_class
         self.correct_class = correct_class
-        self.model.eval()
+        self.remode = remode
+        if self.remode == None:
+            self.model.eval()
+        else:
+            self.model = self.remode
+            self.model.eval()
         test_loss = 0
         correct = 0
         missclassified_images = []
         correct_images = []
+        test_losses = []
         with torch.no_grad():
-            for inputs,target in self.testloader:
-                inputs,target = inputs.to(self.device),target(self.device)
-                outputs = self.model(inputs)
+            for data,target in self.testloader:
+                data,target = data.to(self.device),target.to(self.device)
+                outputs = self.model(data)
                 test_loss +=self.criterion(outputs, target).item()
                 pred = outputs.argmax(dim=1, keepdim=True) 
                 is_correct = pred.eq(target.view_as(pred))
@@ -86,7 +92,7 @@ class training_class:
                             break
                         missclassified_images.append({"target": target[image].cpu().numpy(),
                                                       "pred": pred[image][0].cpu().numpy(),
-                                                      "img": self.testloader[image]
+                                                      "img": data[image]
                                                       })
                 if self.correct_class>0:
                     corret_inds = (is_correct==1).nonzero()[:,0]
@@ -95,10 +101,10 @@ class training_class:
                             break
                         correct_images.append({"target": target[image].cpu().numpy(),
                                                 "pred" : pred[image][0].cpu().numpy(),
-                                                "img"  : self.testloader[image]
+                                                "img"  : data[image]
                                               })
         correct += is_correct.sum().item()
-        test_loss.append(test_loss)
+        test_losses.append(test_loss)
         test_acc = 100. * correct / len(self.testloader.dataset)
         #test_acc.append(test_acc)
         return test_acc,correct_images,missclassified_images

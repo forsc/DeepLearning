@@ -139,3 +139,4 @@ cython_debug/
 
 ##files 
 s7/data/
+S10/model.sav

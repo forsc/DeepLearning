@@ -50,7 +50,7 @@ class AlbumentationImageDataset(torch.utils.data.Dataset):
             A.HorizontalFlip(p=0.5),
             A.Rotate(limit=(-90, 90)),
             A.VerticalFlip(p=0.5),
-            A.Cutout(num_holes=1, max_h_size=8, max_w_size=8, fill_value=0, always_apply=False, p=0.5),
+            A.Cutout(num_holes=1, max_h_size=4, max_w_size=4, fill_value=0, always_apply=False, p=0.5),
             A.Blur(blur_limit=16),
             A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
             ToTensor()
