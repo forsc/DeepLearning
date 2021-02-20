@@ -16,9 +16,13 @@ class training_class:
         self.l2 = l2
         self.loss = 0
         self.scheduler = scheduler
+        self.metric  = 0
 
     def fit(self):
         self.model.train()
+        train_acc = []
+        test_acc = []
+        test_loss = []
         for x_epoch in range(self.epoch):
             #running_loss = 0.0
             for i, data in enumerate(self.trainloader, 0):
@@ -43,16 +47,21 @@ class training_class:
 
                 self.loss.backward()
                 self.optimizer.step()
-
-            if self.scheduler:
-                self.scheduler.step()
                 
             ###Where to Predict LEL
-            train_check = truth_checker(self.model,self.trainloader,self.device) ##FIXTHISSHITLATER
-            test_check =  truth_checker(self.model, self.testloader, self.device)
+            _,train_check = truth_checker(self.model,self.trainloader,self.device,self.criterion) ##FIXTHISSHITLATER
+            testloss,test_check =  truth_checker(self.model, self.testloader, self.device,self.criterion)
+            train_acc.append(train_check)
+            test_acc.append(test_check)
+            test_loss.append(testloss)
+
+            if self.scheduler:
+                self.scheduler.step(test_loss[-1])
+
             #train_check = truth_checker(self.model,self.trainloader)
             print('epoch [%d] train accuracy %.3f : test accuracy %.3f' %
                   (x_epoch,train_check, test_check))
+        return train_acc,test_acc
 
     def predict_method(self,testloader,miss_class,correct_class):
         self.testloader = testloader
