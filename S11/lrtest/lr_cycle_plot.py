@@ -3,7 +3,6 @@ import numpy as np
 from math import floor
 
 class LRCyclePlot(object):
-	"""docstring for LRCyclePlot"""
 	def __init__(self, arg):
 		super(LRCyclePlot, self).__init__()
 		self.iterations = arg.get("iterations", 300)
@@ -33,4 +32,4 @@ class LRCyclePlot(object):
 
 if __name__ == '__main__':
 	lrplt = LRCyclePlot({})
-	lrplt("lr_cycle_plot_test.png")
+	lrplt("lr_cycle_plot.png")
