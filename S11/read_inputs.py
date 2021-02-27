@@ -79,13 +79,13 @@ def read_transform_inputs():
     trainset = torchvision.datasets.CIFAR10(
         root='./data', train=True, download=True)
     trainset = AlbumentationImageDataset(image_list=trainset, is_test=False)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=128,
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=512,
                                               shuffle=True)
 
     testset = torchvision.datasets.CIFAR10(
         root='./data', train=False, download=True)
     testset = AlbumentationImageDataset(image_list=testset, is_test=True)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=128,
+    testloader = torch.utils.data.DataLoader(testset, batch_size=512,
                                              shuffle=False)
 
     classes = ('plane', 'car', 'bird', 'cat',
@@ -98,13 +98,13 @@ def read_transform_inputs_torch():
     trainset = torchvision.datasets.CIFAR10(
         root='./data', train=True, download=True)
     trainset = TorchImageDataset(image_list=trainset, is_test=False)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=128,
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=512,
                                               shuffle=True)
 
     testset = torchvision.datasets.CIFAR10(
         root='./data', train=False, download=True)
     testset = TorchImageDataset(image_list=testset, is_test=True)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=128,
+    testloader = torch.utils.data.DataLoader(testset, batch_size=512,
                                              shuffle=False)
 
     classes = ('plane', 'car', 'bird', 'cat',
