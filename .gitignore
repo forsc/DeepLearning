@@ -436,3 +436,7 @@ planercnn-Fork/roialign/roi_align/src/crop_and_resize.c
 planercnn-Fork/roialign/roi_align/src/crop_and_resize.h
 planercnn-Fork/roialign/roi_align/src/cuda/crop_and_resize_kernel.cu
 planercnn-Fork/roialign/roi_align/src/cuda/crop_and_resize_kernel.h
+S15/checkpoint/checkpoint_refine.pth
+S15/checkpoint/checkpoint.pth
+S15/checkpoint/model-f6b98070.pt
+S15/checkpoint/yolov3-spp-ultralytics.pt
