@@ -71,10 +71,8 @@ class YoloPart(nn.Module):
 
         # loading detector weights
         if yolo_detector_weights_path is not None:
-            self.yolo_detector.load_state_dict(
-                torch.load(yolo_detector_weights_path)["model"], strict=False
-            )
-
+            #print(yolo_detector_weights_path)
+            torch.hub.load('ultralytics/yolov3', 'yolov3')
     def forward(self, x):
         yolo_head_out = self.yolo_head(x)
         return self.yolo_detector(yolo_head_out, x)
@@ -303,6 +301,7 @@ class Model(pl.LightningModule):
 
         # backward and stepping optimizer
         optimizer = self.optimizers()
+        optimizer.zero_grad()
         self.manual_backward(loss, optimizer)
         if (
             self.config.USE_YOLO
@@ -310,10 +309,10 @@ class Model(pl.LightningModule):
             % self.yolo_trainer.accumulate
             == 0
         ):
-            self.manual_optimizer_step(optimizer)
+            optimizer.step()
             self.yolo_ema.update(self.yolo_part)
         else:
-            self.manual_optimizer_step(optimizer)
+            optimizer.step()
 
         metrics = {"loss": loss, "midas_loss": midas_loss.item()}
         self.log("total loss", loss.item(), prog_bar=True)

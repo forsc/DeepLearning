@@ -446,3 +446,5 @@ S15_1/athena/datasets/cifar10.py
 S15_1/athena/datasets/mnist.py
 S15_1/athena/datasets/tinyimagenet.py
 S15_1/athena/datasets/utils.py
+S15_1/model.pt
+S15_1/yolov3.pt

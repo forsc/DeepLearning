@@ -25,7 +25,7 @@ class YoloV3Options:
     evolve: bool = False  # evolve hyperparameters
     bucket: str = ""  # gsutil bucket
     cache_images: bool = False  # cache images for faster training
-    weights: str = "weights/yolo-detector.pt"
+    weights: str = "weights/yolov3.pt"
     name: str = ""  # renames results.txt to results_name.txt if supplied
     device: str = ""  # device id (i.e. 0 or 0,1 or cpu)
     adam: bool = False  # use adam optimizer
@@ -128,7 +128,7 @@ class MidasConfig:
 class YoloV3Config:
     HEAD_CONFIG_PATH = "config/yolov3-head.cfg"
     DETECTOR_CONFIG_PATH = "config/yolov3-spp-detector.cfg"
-    DETECTOR_WEIGHTS_PATH = "weights/yolo-detector.pt"
+    DETECTOR_WEIGHTS_PATH = "weights/yolov3.pt"
 
     hyp: YoloHyp
 
@@ -145,8 +145,8 @@ class PlaneRCNNConfig(_Config):
     NUM_CLASSES = 4
     GPU_COUNT = 1
     INIT_LOG_DIR_AND_WEIGHTS = False # preventing planercnn model from making a log directory and loading weights
-    MODEL_WEIGHTS_PATH = "weights/planercnn/checkpoint-partial.pth"
-    REFINE_MODEL_WEIGHTS_PATH = "weights/planercnn/checkpoint-refine.pth"
+    MODEL_WEIGHTS_PATH = "weights/checkpoint.pth"
+    REFINE_MODEL_WEIGHTS_PATH = "weights/checkpoint_refine.pth"
     DATA_PATH: str
     options: PlaneRCNNOptions
     IMAGE_MAX_DIM: int
