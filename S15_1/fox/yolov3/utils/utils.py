@@ -803,12 +803,12 @@ def output_to_target(output, width, height):
     [batch_id, class_id, x, y, w, h, conf]
     """
     if isinstance(output, torch.Tensor):
-        output = output.cpu().numpy()
+        output = output.to("cpu").numpy()
 
     targets = []
     for i, o in enumerate(output):
         if o is not None:
-            for pred in o:
+            for pred in o.to('cpu').numpy():
                 box = pred[:4]
                 w = (box[2] - box[0]) / width
                 h = (box[3] - box[1]) / height
@@ -816,8 +816,9 @@ def output_to_target(output, width, height):
                 y = box[1] / height + h / 2
                 conf = pred[4]
                 cls = int(pred[5])
-
+                #print(type(output))
                 targets.append([i, cls, x, y, w, h, conf])
+                #print(type(targets))
 
     return np.array(targets)
 
