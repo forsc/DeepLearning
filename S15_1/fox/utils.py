@@ -133,6 +133,7 @@ def plot_yolo_bbox(
         if len(targets) > 0:
             image_targets = targets[targets[:, 0] == i]
             boxes = xywh2xyxy(image_targets[:, 2:6]).T
+            print(boxes)
             classes = image_targets[:, 1].astype("int")
             gt = image_targets.shape[1] == 6  # ground truth if no conf column
             conf = (

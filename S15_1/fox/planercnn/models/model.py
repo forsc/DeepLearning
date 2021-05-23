@@ -1867,8 +1867,9 @@ class MaskRCNN(nn.Module):
             scale = Variable(torch.from_numpy(np.array([h, w, h, w])).float(), requires_grad=False)
             if self.config.GPU_COUNT:
                 scale = scale.cuda()
-
-            gt_boxes = gt_boxes / scale
+            
+            print(gt_boxes.device)
+            gt_boxes = gt_boxes.cuda() / scale
                         
             ## Generate detection targets
             ## Subsamples proposals and generates target outputs for training

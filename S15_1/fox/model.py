@@ -64,6 +64,7 @@ class YoloPart(nn.Module):
         super(YoloPart, self).__init__()
 
         # creating the head
+        print(yolo_head_config_path)
         self.yolo_head = YoloHead(yolo_head_config_path)
 
         # creating detector
@@ -205,6 +206,7 @@ class Model(pl.LightningModule):
 
     def forward(self, x, planercnn_data=None, yolo_ema=None):
         # forward proping midas
+        print(x.shape)
         l1, l2, l3, l4, midas_out = self.midas_net(x)
 
         # forward proping yolo
@@ -218,6 +220,7 @@ class Model(pl.LightningModule):
 
         # forward proping planercnn's maskrcnn
         if planercnn_data is not None and self.config.USE_PLANERCNN:
+            print("yes")
             planercnn_out = self.planercnn_model.predict_on_batch(
                 [l1, l2, l3, l4],
                 planercnn_data,
@@ -349,6 +352,8 @@ class Model(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         imgs, _, yolo_data, planercnn_data = batch
+        #print(imgs.shape)
+        #imgs = imgs.to("cuda")
         metrics = {}
 
         if self.config.USE_YOLO and not self.is_ema_on_device:
